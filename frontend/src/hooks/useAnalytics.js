@@ -1,0 +1,42 @@
+/**
+ * useAnalytics — React hook for analytics tracking
+ *
+ * Usage:
+ *   const { trackEvent, trackConversion } = useAnalytics();
+ *   trackEvent('add_to_cart', { value: 29.99 });
+ */
+
+import { useCallback, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import analytics from '@/config/analytics';
+
+export const CONVERSION_EVENTS = ['contact_submitted', 'sign_up'];
+
+export function useAnalytics() {
+  const location = useLocation();
+
+  // Auto-track page views on route change
+  useEffect(() => {
+    analytics.page(location.pathname + location.search, document.title);
+  }, [location]);
+
+  const trackEvent = useCallback((eventName, properties = {}) => {
+    analytics.track(eventName, properties);
+  }, []);
+
+  const trackConversion = useCallback((eventName, value, currency = 'USD', extra = {}) => {
+    analytics.track(eventName, { value, currency, ...extra });
+    // Mark as conversion in all providers
+    if (window.gtag) {
+      window.gtag('event', 'conversion', { send_to: 'AW-xxx/yyy', value, currency });
+    }
+  }, []);
+
+  const identifyUser = useCallback((userId, traits) => {
+    analytics.identify(userId, traits);
+  }, []);
+
+  return { trackEvent, trackConversion, identifyUser };
+}
+
+export default useAnalytics;

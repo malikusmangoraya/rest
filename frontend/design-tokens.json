@@ -1,0 +1,54 @@
+{
+  "style": "vengeance",
+  "name": "Vengeance Cyber-Brutalism",
+  "dna": "3D holographic tilt, deep obsidian darkness, sharp neon edge glows, HUD grid lines, cyber aesthetic.",
+  "project_name": "rest",
+  "palette": {
+    "primary": "#00f0ff",
+    "secondary": "#ff0055",
+    "accent": "#7000ff",
+    "bg": "#050508",
+    "card": "rgba(10,10,18,0.9)",
+    "surface": "rgba(20,20,35,0.7)",
+    "text": "#ffffff",
+    "muted": "#8888aa",
+    "border": "rgba(0,240,255,0.3)"
+  },
+  "palette_hsl": {
+    "primary": "184 100.0% 50.0%",
+    "secondary": "340 100.0% 50.0%",
+    "accent": "266 100.0% 50.0%",
+    "bg": "240 23.1% 2.5%",
+    "card": "rgba(10,10,18,0.9)",
+    "surface": "rgba(20,20,35,0.7)",
+    "text": "0 0.0% 100.0%",
+    "muted": "240 16.7% 60.0%",
+    "border": "rgba(0,240,255,0.3)"
+  },
+  "typography": {
+    "display": "Space Grotesk",
+    "sans": "Inter",
+    "mono": "JetBrains Mono",
+    "scale": [12, 14, 16, 18, 24, 30, 36, 48, 64]
+  },
+  "radius": {
+    "card": "12px",
+    "button": "6px"
+  },
+  "shadow": {
+    "card": "0 0 30px rgba(0,240,255,0.15), inset 0 0 15px rgba(0,240,255,0.05)",
+    "button": "0 0 20px rgba(0,240,255,0.4)"
+  },
+  "border": {
+    "card": "1px solid rgba(0,240,255,0.35)",
+    "button": "1px solid #00f0ff"
+  },
+  "effects": {
+    "blur": "12px",
+    "glow": "0 0 40px rgba(0,240,255,0.35)"
+  },
+  "weight": "bold",
+  "composition": "holographic",
+  "generated_by": "lumicorepro-design-engine",
+  "timestamp": "2026-09-14T07:50:22Z"
+}

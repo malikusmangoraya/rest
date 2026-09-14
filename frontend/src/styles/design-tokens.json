@@ -1,0 +1,26 @@
+{
+  "style": "consulting_pro",
+  "name": "Consulting Professional",
+  "ui_style": "glassmorphism",
+  "target_region": "gcc",
+  "project_name": "rest",
+  "palette": {
+    "primary": "#b8860b",
+    "accent": "#0f766e",
+    "heading": "#5b3200",
+    "navBg": "#f8fafc",
+    "footerBg": "#0f172a",
+    "text": "#1e293b",
+    "muted": "#64748b",
+    "card": "#ffffff",
+    "surface": "#f8fafc",
+    "border": "#e2e8f0",
+    "bg": "#ffffff"
+  },
+  "typography": {
+    "display": "Poppins",
+    "sans": "Roboto",
+    "mono": "JetBrains Mono"
+  },
+  "theme": "light"
+}

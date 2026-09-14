@@ -1,0 +1,16 @@
+# Render Blueprint
+services:
+  - type: web
+    name: rest-frontend
+    env: static
+    buildCommand: npm ci && npm run build
+  - type: web
+    name: rest-backend
+    env: node
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+
+databases:
+  - name: rest-db
+    databaseName: rest
