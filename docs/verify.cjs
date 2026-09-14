@@ -17,16 +17,23 @@ const { chromium } = require('playwright');
   out.video = await page.evaluate(() => {
     const v = document.querySelector('.hero-video');
     if (!v) return 'MISSING';
-    return { src: v.getAttribute('src'), playing: v.readyState >= 3, loop: v.loop, muted: v.muted };
+    return { src: v.getAttribute('src'), playing: v.readyState >= 3, loop: v.loop, muted: v.muted, duration: v.duration };
   });
-  out.videoLength = await page.evaluate(() => {
-    const v = document.querySelector('.hero-video');
-    return v ? { ready: v.readyState, network: v.networkState, duration: v.duration } : null;
+
+  out.depthLayers = await page.evaluate(() => {
+    const layers = [];
+    const d2 = document.querySelector('.hero-depth-2');
+    if (d2) layers.push({ name: 'showroom', src: d2.getAttribute('src'), od: getComputedStyle(d2).transform });
+    const scene = document.querySelector('.hero-3d-scene');
+    if (scene) layers.push({ name: 'scene', transformStyle: getComputedStyle(scene).transformStyle });
+    const content = document.querySelector('.hero-3d-content');
+    if (content) layers.push({ name: 'content', transformStyle: getComputedStyle(content).transformStyle });
+    return layers;
   });
 
   out.realCar = await page.evaluate(() => {
     const c = document.querySelector('.real-car');
-    return { src: c.getAttribute('src'), anim: getComputedStyle(c).animationName, w: c.naturalWidth, h: c.naturalHeight };
+    return { src: c.getAttribute('src'), anim: getComputedStyle(c).animationName, w: c.naturalWidth };
   });
   out.roadAnim = await page.evaluate(() => {
     const r = document.querySelector('.real-road');
@@ -35,10 +42,13 @@ const { chromium } = require('playwright');
 
   out.heroImages = await page.evaluate(() => {
     const host = location.host;
-    return Array.from(document.images).map((i) => {
+    const imgs = Array.from(document.images).map((i) => {
       const u = new URL(i.src, location.href);
       return { local: u.host === host, src: u.pathname.split('/').pop(), ok: i.complete && i.naturalWidth > 0 };
     });
+    const unique = {};
+    imgs.forEach((i) => { if (!unique[i.src]) unique[i.src] = i; });
+    return Object.values(unique);
   });
   out.externalImageRequests = await page.evaluate(() => {
     const host = location.host;

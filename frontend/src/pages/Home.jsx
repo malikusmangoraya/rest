@@ -6,7 +6,8 @@ import api from '@/services/api';
 /*  Locally bundled media — everything ships inside the project so the */
 /*  site loads instantly with zero external image requests.            */
 /* ------------------------------------------------------------------ */
-const HERO_VIDEO = 'media/hero-drive.mp4';
+const HERO_VIDEO = 'media/hero-sunset-car.mp4';
+const HERO_SHOWROOM = 'assets/showroom-dark.jpg';
 const HERO_CAR = 'assets/car-hero.png';
 const DEFAULT_CAR = 'assets/cars/car-1.jpg';
 
@@ -75,9 +76,55 @@ function useCountUp(target, duration = 1400) {
 /*  across a glowing road strip (CSS). Reduced-motion users see it     */
 /*  parked statically.                                                 */
 /* ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------ */
+/*  3D hero — a real cinematic video + real photography arranged in a   */
+/*  CSS-3D scene. Each layer sits at its own translateZ depth: the      */
+/*  video is farthest back, the showroom photo mid-field, the real car  */
+/*  PNG in front, and the copy closest. The whole scene tilts with the  */
+/*  cursor for a true 3D parallax feel (disabled for reduced motion).   */
+/* ------------------------------------------------------------------ */
+function TiltScene({ children, className }) {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let raf = 0;
+    const onMove = (e) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        setTilt({ x: py * -7, y: px * 10 });
+      });
+    };
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseleave', () => setTilt({ x: 0, y: 0 }));
+    return () => {
+      el.removeEventListener('mousemove', onMove);
+      el.removeEventListener('mouseleave', () => setTilt({ x: 0, y: 0 }));
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.25s ease-out',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function RealCarDrive() {
   return (
-    <div className="real-car-stage select-none" aria-hidden="true">
+    <div className="real-car-stage select-none" aria-hidden="true" style={{ transform: 'translateZ(140px)' }}>
       <div className="real-road" />
       <span className="speed-line hero-sl-1" />
       <span className="speed-line hero-sl-2" />
@@ -142,70 +189,84 @@ export default function Home() {
 
   return (
     <main className="overflow-hidden">
-      {/* ═══ HERO — real car video + photo-perfect car drive ═══ */}
-      <section className="relative overflow-hidden bg-slate-950 text-white" aria-label="Hero">
-        <video
-          className="hero-video"
-          src={HERO_VIDEO}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        />
-        <div className="hero-video-overlay" aria-hidden="true" />
-        <div className="absolute inset-0 -z-10 hero-aurora" />
+      {/* ═══ HERO — cinematic 3D depth scene (real video + real photos) ═══ */}
+      <section className="relative min-h-[96vh] overflow-hidden bg-slate-950 text-white" aria-label="Hero">
+        <TiltScene className="hero-3d-scene">
+          <img
+            className="hero-depth-2"
+            src={HERO_SHOWROOM}
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+            draggable={false}
+            style={{ transform: 'translateZ(-220px) scale(1.55)', transformStyle: 'preserve-3d' }}
+          />
+          <video
+            className="hero-video"
+            src={HERO_VIDEO}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            style={{ transform: 'translateZ(-140px) scale(1.35)', transformStyle: 'preserve-3d' }}
+          />
+          <div className="hero-video-overlay" aria-hidden="true" style={{ transform: 'translateZ(-60px) scale(1.15)', transformStyle: 'preserve-3d' }} />
+          <div className="absolute inset-0 hero-aurora" aria-hidden="true" style={{ transform: 'translateZ(0)', transformStyle: 'preserve-3d' }} />
 
-        <div className="relative px-5 pb-16 pt-24 sm:pt-28">
-          <div className="mx-auto max-w-6xl text-center">
-            <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-slate-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-amber-200 backdrop-blur">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-              Dubai Showroom — 2026 Collection
+          <div className="hero-3d-content relative" style={{ transform: 'translateZ(200px)', transformStyle: 'preserve-3d' }}>
+            <div className="px-5 pb-10 pt-20 sm:pt-24">
+              <div className="mx-auto max-w-6xl text-center">
+                <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-slate-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-amber-200 backdrop-blur">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+                  Dubai Showroom — 2026 Collection
+                </div>
+
+                <h1 className="animate-rise mt-6 text-4xl font-extrabold leading-tight sm:text-6xl lg:text-7xl" style={{ animationDelay: '0.12s' }}>
+                  Own the Road
+                  <br />
+                  <span className="shimmer-text">In Absolute Luxury</span>
+                </h1>
+
+                <p className="animate-rise mx-auto mt-5 max-w-2xl text-base text-slate-300 sm:text-lg" style={{ animationDelay: '0.24s' }}>
+                  Hand-finished hypercars, electric flagships and executive sedans — delivered
+                  with white-glove service across the UAE and the Gulf.
+                </p>
+
+                <div className="animate-rise mt-8 flex flex-wrap items-center justify-center gap-4" style={{ animationDelay: '0.34s' }}>
+                  <a href="#inventory" className="btn-primary hero-glow-card">
+                    Explore the Collection <ArrowRight size={16} />
+                  </a>
+                  <a href="#test-drive" className="btn-outline !border-amber-300/40 !text-amber-100">
+                    <CalendarCheck size={16} /> Book a Test Drive
+                  </a>
+                </div>
+
+                <div className="animate-rise mt-6 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-400" style={{ animationDelay: '0.44s' }}>
+                  {[
+                    ['5-Year Warranty', ShieldCheck],
+                    ['Elite Concierge', Phone],
+                    ['600h Detailing', Wrench],
+                  ].map(([label, Icon]) => (
+                    <span key={label} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+                      <Icon size={12} className="text-amber-300" /> {label}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
 
-          <h1 className="animate-rise mt-6 text-4xl font-extrabold leading-tight sm:text-6xl lg:text-7xl" style={{ animationDelay: '0.12s' }}>
-            Own the Road
-            <br />
-            <span className="shimmer-text">In Absolute Luxury</span>
-          </h1>
+            <RealCarDrive />
 
-          <p className="animate-rise mx-auto mt-5 max-w-2xl text-base text-slate-300 sm:text-lg" style={{ animationDelay: '0.24s' }}>
-            Hand-finished hypercars, electric flagships and executive sedans — delivered
-            with white-glove service across the UAE and the Gulf.
-          </p>
-
-          <div className="animate-rise mt-8 flex flex-wrap items-center justify-center gap-4" style={{ animationDelay: '0.34s' }}>
-            <a href="#inventory" className="btn-primary hero-glow-card">
-              Explore the Collection <ArrowRight size={16} />
-            </a>
-            <a href="#test-drive" className="btn-outline !border-amber-300/40 !text-amber-100">
-              <CalendarCheck size={16} /> Book a Test Drive
-            </a>
+            <div className="relative mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4" style={{ transform: 'translateZ(60px)' }}>
+              <StatBlock value={4200} suffix="+" label="Vehicles Delivered" />
+              <StatBlock value={14} suffix="" label="Years in Dubai" />
+              <StatBlock value={97} suffix="%" label="Client Retention" />
+              <StatBlock value={6} suffix="★" label="Concierge Rating" />
+            </div>
           </div>
-
-          <div className="animate-rise mt-6 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-400" style={{ animationDelay: '0.44s' }}>
-            {[
-              ['5-Year Warranty', ShieldCheck],
-              ['Elite Concierge', Phone],
-              ['600h Detailing', Wrench],
-            ].map(([label, Icon]) => (
-              <span key={label} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                <Icon size={12} className="text-amber-300" /> {label}
-              </span>
-            ))}
-          </div>
-          </div>
-        </div>
-
-        <RealCarDrive />
-
-        <div className="relative mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4">
-          <StatBlock value={4200} suffix="+" label="Vehicles Delivered" />
-          <StatBlock value={14} suffix="" label="Years in Dubai" />
-          <StatBlock value={97} suffix="%" label="Client Retention" />
-          <StatBlock value={6} suffix="★" label="Concierge Rating" />
-        </div>
+        </TiltScene>
       </section>
 
       {/* ═══ BRAND MARQUEE ═══ */}

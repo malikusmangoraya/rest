@@ -264,6 +264,23 @@
   object-fit: cover;
   opacity: 0.55;
 }
+.hero-3d-scene {
+  position: relative;
+  min-height: 96vh;
+  transform-style: preserve-3d;
+}
+.hero-depth-2 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.32;
+}
+.hero-3d-content {
+  position: relative;
+  transform-style: preserve-3d;
+}
 .hero-video-overlay {
   position: absolute;
   inset: 0;
@@ -319,12 +336,15 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-orb, .marquee-track, .speed-line, .real-car, .real-road,
   .headlight-glow, .shimmer-text, .hero-glow-card, .animate-rise,
-  .tilt-card, .tilt-card:hover {
+  .tilt-card, .tilt-card:hover, .hero-3d-scene {
     animation: none !important;
     transform: none !important;
     transition: none !important;
   }
-.hero-video { display: none; }
+  .hero-video, .hero-depth-2 { display: none; }
+  .hero-3d-scene, .hero-3d-content, .real-car-stage {
+    transform: none !important;
+  }
 }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
