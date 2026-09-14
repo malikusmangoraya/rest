@@ -141,3 +141,6 @@ export const CardFooter = React.forwardRef(({ children, className = '', ...props
 CardFooter.displayName = 'CardFooter';
 
 export default Card;
+
+
+export { Card as Card };

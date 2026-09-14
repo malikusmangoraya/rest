@@ -9,6 +9,7 @@ require('dotenv').config();
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
+const vehicleRoutes = require('./routes/vehicle.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,6 +47,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 // Routes will be mounted here
 
+app.use('/api/vehicles', vehicleRoutes);
 // API Documentation
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

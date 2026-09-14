@@ -1,0 +1,14 @@
+{
+  "bookings": [
+    {
+      "id": 1,
+      "name": "Test User",
+      "phone": "+971501234567",
+      "model": "Phantom GT",
+      "date": "ASAP",
+      "status": "new",
+      "createdAt": "2026-09-14T08:27:15.367Z"
+    }
+  ],
+  "leads": []
+}

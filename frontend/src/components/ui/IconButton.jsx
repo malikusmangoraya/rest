@@ -85,3 +85,6 @@ const IconButton = React.forwardRef(
 IconButton.displayName = 'IconButton';
 
 export default IconButton;
+
+
+export { IconButton as IconButton };

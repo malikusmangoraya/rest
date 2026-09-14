@@ -96,3 +96,6 @@ const Badge = React.forwardRef(
 Badge.displayName = 'Badge';
 
 export default Badge;
+
+
+export { Badge as Badge };

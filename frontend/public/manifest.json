@@ -1,32 +1,19 @@
 {
-  "name": "Rest",
-  "short_name": "Rest",
-  "description": "Professional, fast, and built to turn visitors into customers.",
+  "name": "VelonDrive — Luxury Cars Dubai",
+  "short_name": "VelonDrive",
+  "description": "Dubai's luxury automotive concierge — hypercars, electric flagships and executive sedans with white-glove service.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#0d9488",
+  "theme_color": "#b8860b",
   "orientation": "portrait-primary",
   "icons": [
-    { "src": "/icons/icon-72x72.png", "sizes": "72x72", "type": "image/png" },
-    { "src": "/icons/icon-96x96.png", "sizes": "96x96", "type": "image/png" },
-    { "src": "/icons/icon-128x128.png", "sizes": "128x128", "type": "image/png" },
-    { "src": "/icons/icon-144x144.png", "sizes": "144x144", "type": "image/png" },
-    { "src": "/icons/icon-152x152.png", "sizes": "152x152", "type": "image/png" },
-    {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    { "src": "/icons/icon-384x384.png", "sizes": "384x384", "type": "image/png" },
-    {
-      "src": "/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/icons/icon.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
   ],
-  "categories": ["Automotive, Luxury Car Dealership"],
-  "screenshots": []
+  "categories": ["Automotive", "Shopping"],
+  "shortcuts": [
+    { "name": "Browse Inventory", "url": "/#inventory" },
+    { "name": "Book a Test Drive", "url": "/#test-drive" }
+  ]
 }

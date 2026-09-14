@@ -26,3 +26,6 @@ const ButtonMotion = React.forwardRef(
 ButtonMotion.displayName = 'ButtonMotion';
 
 export default ButtonMotion;
+
+
+export { ButtonMotion as ButtonMotion };

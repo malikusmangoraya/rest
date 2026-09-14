@@ -102,3 +102,6 @@ const analytics = {
 };
 
 export default analytics;
+
+
+export { analytics as analytics };
