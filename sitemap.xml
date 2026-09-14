@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://rest.com</loc>
+    <lastmod>2026-09-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rest.com/ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rest.com/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rest.com"/>
+  </url>
+  <url>
+    <loc>https://rest.com/about</loc>
+    <lastmod>2026-09-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rest.com/ar/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rest.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rest.com/about"/>
+  </url>
+  <url>
+    <loc>https://rest.com/services</loc>
+    <lastmod>2026-09-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rest.com/ar/services"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rest.com/en/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rest.com/services"/>
+  </url>
+  <url>
+    <loc>https://rest.com/contact</loc>
+    <lastmod>2026-09-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://rest.com/ar/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rest.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rest.com/contact"/>
+  </url>
+</urlset>
