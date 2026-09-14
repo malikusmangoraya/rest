@@ -3,14 +3,34 @@ import { Zap, ShieldCheck, Wrench, ArrowRight, Phone, CalendarCheck, Star, MapPi
 import api from '@/services/api';
 
 /* ------------------------------------------------------------------ */
+/*  Locally bundled media — everything ships inside the project so the */
+/*  site loads instantly with zero external image requests.            */
+/* ------------------------------------------------------------------ */
+const HERO_VIDEO = 'media/hero-drive.mp4';
+const HERO_CAR = 'assets/car-hero.png';
+const DEFAULT_CAR = 'assets/cars/car-1.jpg';
+
+/* id → locally bundled photo (unique images only, reused for repeats) */
+const LOCAL_VEHICLE_IMG = {
+  1: 'assets/cars/car-1.jpg',
+  2: 'assets/cars/car-2.jpg',
+  3: 'assets/cars/car-3.jpg',
+  4: 'assets/cars/car-4.jpg',
+  5: 'assets/cars/car-5.jpg',
+  6: 'assets/cars/car-6.jpg',
+  7: 'assets/cars/car-2.jpg',
+  8: 'assets/cars/car-3.jpg',
+};
+
+/* ------------------------------------------------------------------ */
 /*  Local fallback catalogue — used when the backend is unreachable,   */
 /*  so the site is always complete even in static preview mode.        */
 /* ------------------------------------------------------------------ */
 const FALLBACK_VEHICLES = [
-  { id: 1, brand: 'Phantom GT', model: 'V12 Apex Coupe', year: 2026, price: 189500, power: 623, zeroSixty: 3.4, fuel: 'Petrol', image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80', tag: 'Flagship', color: '#1a1a2e' },
-  { id: 2, brand: 'Nebula RS', model: 'Electric Hyper SUV', year: 2026, price: 145000, power: 750, zeroSixty: 2.8, fuel: 'EV', image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80', tag: 'Zero Emission', color: '#0e2f44' },
-  { id: 3, brand: 'Titan LX', model: 'Executive Sedan', year: 2025, price: 98000, power: 503, zeroSixty: 4.1, fuel: 'Hybrid', image: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80', tag: 'Best Seller', color: '#3b2b1a' },
-  { id: 4, brand: 'Sabre ST', model: 'Track Edition', year: 2025, price: 132000, power: 580, zeroSixty: 3.2, fuel: 'Petrol', image: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80', tag: 'Limited', color: '#3a1d1d' },
+  { id: 1, brand: 'Phantom GT', model: 'V12 Apex Coupe', year: 2026, price: 189500, power: 623, zeroSixty: 3.4, fuel: 'Petrol', image: LOCAL_VEHICLE_IMG[1], tag: 'Flagship', color: '#1a1a2e' },
+  { id: 2, brand: 'Nebula RS', model: 'Electric Hyper SUV', year: 2026, price: 145000, power: 750, zeroSixty: 2.8, fuel: 'EV', image: LOCAL_VEHICLE_IMG[2], tag: 'Zero Emission', color: '#0e2f44' },
+  { id: 3, brand: 'Titan LX', model: 'Executive Sedan', year: 2025, price: 98000, power: 503, zeroSixty: 4.1, fuel: 'Hybrid', image: LOCAL_VEHICLE_IMG[3], tag: 'Best Seller', color: '#3b2b1a' },
+  { id: 4, brand: 'Sabre ST', model: 'Track Edition', year: 2025, price: 132000, power: 580, zeroSixty: 3.2, fuel: 'Petrol', image: LOCAL_VEHICLE_IMG[4], tag: 'Limited', color: '#3a1d1d' },
 ];
 
 const MARQUEE_BRANDS = ['PHANTOM', 'NEBULA', 'TITAN', 'SABRE', 'VOLTAGE', 'AERO', 'SOLARIS', 'GRANDIA'];
@@ -51,57 +71,19 @@ function useCountUp(target, duration = 1400) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Animated hero car (SVG, wheels spin + road speed lines).           */
+/*  Real car on the hero — photo-perfect transparent PNG that drives   */
+/*  across a glowing road strip (CSS). Reduced-motion users see it     */
+/*  parked statically.                                                 */
 /* ------------------------------------------------------------------ */
-function AnimatedCar() {
+function RealCarDrive() {
   return (
-    <div className="relative mx-auto mt-10 w-full max-w-3xl select-none" aria-hidden="true">
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-slate-900/80 to-slate-950/90 px-6 py-8 backdrop-blur">
-        <div className="hero-orb left-[8%] top-[14%] h-40 w-40 bg-amber-400/30" />
-        <div className="hero-orb right-[10%] top-[8%] h-32 w-32 bg-cyan-300/20" />
-        <div className="hero-orb bottom-[6%] right-[22%] h-44 w-44 bg-fuchsia-400/15" />
-        <svg viewBox="0 0 760 240" className="relative w-full" role="img" aria-label="Animated luxury car driving across the hero">
-          <defs>
-            <linearGradient id="bodyGold" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#ffd76a" />
-              <stop offset="45%" stopColor="#d49a1c" />
-              <stop offset="100%" stopColor="#7c4d00" />
-            </linearGradient>
-            <linearGradient id="glassTint" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#bfe9ff" />
-              <stop offset="100%" stopColor="#245b7a" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="196" width="760" height="26" rx="13" fill="#0b1220" />
-          <line x1="0" y1="209" x2="760" y2="209" stroke="#b8860b" strokeWidth="3" className="road-dash" opacity="0.55" />
-          <line x1="-60" y1="60" x2="40" y2="60" className="speed-line" />
-          <line x1="-60" y1="120" x2="40" y2="120" className="speed-line" style={{ animationDelay: '0.33s' }} />
-          <line x1="-60" y1="168" x2="40" y2="168" className="speed-line" style={{ animationDelay: '0.66s' }} />
-          <g className="animate-car-drift" style={{ animation: 'car-drive 9s ease-in-out infinite' }}>
-            <path d="M60 168 L104 96 Q110 84 128 86 L280 80 Q300 79 318 94 L360 120 L470 120 L500 96 Q518 80 538 84 L620 96 Q638 100 640 118 L652 150 L678 160 Q700 168 700 184 Q700 208 676 208 L96 208 Q72 208 72 184 Q70 168 60 168 Z" fill="url(#bodyGold)" stroke="#f7d77e" strokeWidth="2" />
-            <path d="M128 96 L240 88 L258 118 L150 118 Z" fill="url(#glassTint)" opacity="0.95" />
-            <path d="M330 122 L468 122 L500 100 Q512 90 530 92 L580 106 Q596 112 598 132 L600 150 L330 150 Z" fill="url(#glassTint)" opacity="0.85" />
-            <circle cx="178" cy="178" r="34" fill="#0b1220" stroke="#f7d77e" strokeWidth="3" />
-            <g className="car-wheel">
-              <circle cx="178" cy="178" r="16" fill="none" stroke="#ffd873" strokeWidth="4" />
-              <line x1="178" y1="162" x2="178" y2="194" stroke="#ffd873" strokeWidth="3" />
-              <line x1="162" y1="178" x2="194" y2="178" stroke="#ffd873" strokeWidth="3" />
-              <circle cx="178" cy="178" r="4" fill="#fff3d6" />
-            </g>
-            <circle cx="540" cy="178" r="34" fill="#0b1220" stroke="#f7d77e" strokeWidth="3" />
-            <g className="car-wheel">
-              <circle cx="540" cy="178" r="16" fill="none" stroke="#ffd873" strokeWidth="4" />
-              <line x1="540" y1="162" x2="540" y2="194" stroke="#ffd873" strokeWidth="3" />
-              <line x1="524" y1="178" x2="556" y2="178" stroke="#ffd873" strokeWidth="3" />
-              <circle cx="540" cy="178" r="4" fill="#fff3d6" />
-            </g>
-            <path d="M96 120 L150 120 L150 70 Q96 96 96 120 Z" fill="#0b1220" opacity="0.5" />
-          </g>
-        </svg>
-        <div className="mt-2 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.3em] text-amber-200/70">
-          <Zap size={12} /> Drift Mode Engaged
-        </div>
-      </div>
+    <div className="real-car-stage select-none" aria-hidden="true">
+      <div className="real-road" />
+      <span className="speed-line hero-sl-1" />
+      <span className="speed-line hero-sl-2" />
+      <span className="speed-line hero-sl-3" />
+      <img className="real-car" src={HERO_CAR} alt="" draggable={false} />
+      <div className="headlight-glow" />
     </div>
   );
 }
@@ -133,7 +115,9 @@ export default function Home() {
       .get('/vehicles')
       .then((res) => {
         const list = res?.data?.data;
-        if (mounted && Array.isArray(list) && list.length) setVehicles(list);
+        if (mounted && Array.isArray(list) && list.length) {
+          setVehicles(list.map((v) => ({ ...v, image: LOCAL_VEHICLE_IMG[v.id] || DEFAULT_CAR })));
+        }
       })
       .catch(() => { /* backend offline → curated fallback stays */ });
     return () => { mounted = false; };
@@ -154,22 +138,31 @@ export default function Home() {
     }
   };
 
-  const carImg = (v) => (v && v.image ? v.image : v.fallbackImage);
+  const carImg = (v) => (v && v.image ? v.image : DEFAULT_CAR);
 
   return (
     <main className="overflow-hidden">
-      {/* ═══ HERO — full animation ═══ */}
-      <section className="relative min-h-[92vh] bg-gradient-to-b from-slate-950 via-slate-925 to-canvas px-5 pb-16 text-white" aria-label="Hero">
+      {/* ═══ HERO — real car video + photo-perfect car drive ═══ */}
+      <section className="relative overflow-hidden bg-slate-950 text-white" aria-label="Hero">
+        <video
+          className="hero-video"
+          src={HERO_VIDEO}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
+        <div className="hero-video-overlay" aria-hidden="true" />
         <div className="absolute inset-0 -z-10 hero-aurora" />
-        <div className="hero-orb left-[6%] top-[18%] h-52 w-52 bg-amber-400/25" />
-        <div className="hero-orb right-[4%] top-[10%] h-64 w-64 bg-cyan-400/15" />
-        <div className="hero-orb bottom-[12%] left-[30%] h-60 w-60 bg-fuchsia-500/12" />
 
-        <div className="mx-auto max-w-6xl pt-24 text-center sm:pt-28">
-          <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-amber-200">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            Dubai Showroom — 2026 Collection
-          </div>
+        <div className="relative px-5 pb-16 pt-24 sm:pt-28">
+          <div className="mx-auto max-w-6xl text-center">
+            <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-slate-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-amber-200 backdrop-blur">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+              Dubai Showroom — 2026 Collection
+            </div>
 
           <h1 className="animate-rise mt-6 text-4xl font-extrabold leading-tight sm:text-6xl lg:text-7xl" style={{ animationDelay: '0.12s' }}>
             Own the Road
@@ -202,11 +195,12 @@ export default function Home() {
               </span>
             ))}
           </div>
+          </div>
         </div>
 
-        <AnimatedCar />
+        <RealCarDrive />
 
-        <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4">
+        <div className="relative mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4">
           <StatBlock value={4200} suffix="+" label="Vehicles Delivered" />
           <StatBlock value={14} suffix="" label="Years in Dubai" />
           <StatBlock value={97} suffix="%" label="Client Retention" />
